@@ -4,5 +4,4 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-> Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
-{: .prompt-tip }
+> Dathalind is a malware analyst with over 3 years of experience in Cyber Security. He lives in Texas, and has 2 cats.
