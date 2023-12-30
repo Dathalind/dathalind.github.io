@@ -40,7 +40,7 @@ Indicators page flags the compiler timestamp, as being 2065 as the year this was
 
 No flagged imports. 
 
-We do see some other interesting strings flagged, camo casing:
+We do see some other interesting strings flagged, camel casing:
 
 - CMd
 - arP
