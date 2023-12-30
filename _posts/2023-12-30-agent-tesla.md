@@ -19,7 +19,7 @@ File is a 32-bit portable executable, identified as a .NET linker file.
 
 - Not super high levels of entropy, 6.41799 overall. Different sections are not packed either, highest capping at 6.42465
 
-![DetectItEasy]() 
+![DetectItEasy](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/agent_tesla/detectiteasytesla.png?raw=true) 
 
 ## Floss
 Lots of strings, some seemingly base64 strings contained inside, other interesting strings:
