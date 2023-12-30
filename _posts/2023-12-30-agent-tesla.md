@@ -8,12 +8,12 @@ tags: [analysis, security, agent-tesla]
 # Overview
 Agent Tesla is a remote access trojan (RAT) that is often associated with phishing attacks. Due to its increased flexibility, it has seen a lot of use by threat actors. In this page, we break down some of the techniques used in the compilation of the malicious executable. 
 
-#  Static Analysis
+##  Static Analysis
 
 ### [VirusTotal](https://www.virustotal.com/gui/file/7f7323ef90321761d5d058a3da7f2fb622823993a221a8653a170fe8735f6a45)
 Hash: `7f7323ef90321761d5d058a3da7f2fb622823993a221a8653a170fe8735f6a45`
 
-## DetectItEasy
+### DetectItEasy
 
 File is a 32-bit portable executable, identified as a .NET linker file. 
 
@@ -21,7 +21,7 @@ File is a 32-bit portable executable, identified as a .NET linker file.
 
 ![DetectItEasy](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/agent_tesla/detectiteasytesla.png?raw=true) 
 
-## Floss
+### Floss
 Lots of strings, some seemingly base64 strings contained inside, other interesting strings:
 
 - IEnumUnkno.exe; likely original file name
@@ -35,7 +35,7 @@ Lots of strings, some seemingly base64 strings contained inside, other interesti
 
 There seems to be some fake checks for a valid username, and some string references to gear items for a RPG type of game.
 
-## PEStudio
+### PEStudio
 Indicators page flags the compiler timestamp, as being 2065 as the year this was compiled. We see original file name “IEnumUnkno.exe”.
 
 No flagged imports. 
@@ -48,32 +48,32 @@ We do see some other interesting strings flagged, camel casing:
 
 One library: mscoree.dll
 
-# Dynamic Analysis
+## Dynamic Analysis
 
 Done with multiple tools; Wireshark, ProcMon, RegShot, TCPView, InetSim. 
 
-## Wireshark
+### Wireshark
 Wireshark is capturing a lot of requests, need to drill down to find any interesting packets. The get and post http requests I see are either related to Microsoft or Google; nothing helpful or interesting there. Same for the DNS requests, nothing out of the ordinary.
 
-## ProcMon
+### ProcMon
 Looks like we can see this running locally. Looks to be grabbing browser data, likely to try and exploit it. Seems to be checking for a lot of different browser types. Didn’t really see it write any interesting files. We could revert and try to look for the original file name. 
 
-## RegShot
+### RegShot
 Took first shot before execution. Now after a good amount of time has passed, we are taking the second shot. Then running the comparison. Huge number of changes, almost 200,000 registry changes. Nothing immediately standing out as interesting. Not seeing any persistence mechanisms via registry.
 
-## InetSim
+### InetSim
 Enabled on Remnux box, ensure your windows box is using that box IP for its DNS. Stopped inetsim, Tesla.exe still on box. Doesn’t appear to have a check to ensure constant sustained internet connection. 
 
-## TCPView
+### TCPView
 Check for any weird connections we can see locally. Nothing interesting. 
 
 - Going to restart to see if there is anything interesting that happens upon restart. Nothing interesting.
 
-# Advanced Static Analysis
+## Advanced Static Analysis
 
 Done with using a common decompiler for C# code, dnSpy. 
 
-## dnSpy
+### dnSpy
 
 Different section names are obfuscated as random characters, will take some digging around to find the main functions of the program. 
 
@@ -111,7 +111,7 @@ Different section names are obfuscated as random characters, will take some digg
 - class `MailAddress`
 - class `SmtpAccountConfiguration`
 
-# Advanced Dynamic Analysis
+## Advanced Dynamic Analysis
 
 Debugging inside of dnSpy. 
 

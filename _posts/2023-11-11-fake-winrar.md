@@ -9,13 +9,13 @@ tags: [analysis, security, winrar]
 
 Threat actors will sometimes modify a known and widely utilized application in order to trick users into downloading something they thought is safe, but contains malicious code. This is often done through uploading to a trusted open repo or can be done through advertising the download on google. In this blog, we examine a sample of Fake-Winrar, which is normally a safe archive unpacking tool that contains malicious code.
 
-# Static Analysis
+## Static Analysis
 
 ### [VirusTotal](https://www.virustotal.com/gui/file/eb2723d97df6cf5db266cf6461d0fd63c2c3d686297c9f503ebc24fbd5529d37)
 
 Hash: `eb2723d97df6cf5db266cf6461d0fd63c2c3d686297c9f503ebc24fbd5529d37` 
 
-## PEStudio
+### PEStudio
 PE32, certificate WinAuth2.0, potentially not packed. Overlay & .text are packed.
 Data execution prevention, control flow guard, ASLR are enabled.
 
@@ -23,7 +23,7 @@ Data execution prevention, control flow guard, ASLR are enabled.
 
 Only 3 libraries; Interesting version, original file name and copyright info.
 
-## Floss
+### Floss
 > Typical error message, attempting to appear to be legitimate winrar.exe.
 >> An application has made an attempt to load the C runtime library incorrectly.
 >> Please contact the application's support team for more information.
@@ -52,13 +52,13 @@ Only 3 libraries; Interesting version, original file name and copyright info.
 > - `<program name unknown>`
 > - Runtime Error!
 
-## Unusual strings
+### Unusual strings
 ![Unusual Strings](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/fake_winrar/stringswinrar1.png?raw=true)
 
-## Certificates
+### Certificates
 ![Certificates](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/fake_winrar/stringswinrar2.png?raw=true)
 
-## UTF-strings
+### UTF-strings
 > C:.NET.0.30319.exe 
 >> InternalName - `AJIfy80xO6tP` 
 
@@ -66,19 +66,19 @@ Only 3 libraries; Interesting version, original file name and copyright info.
 
 >> OriginalFilename `MjrVL53K.exe`
 
-## Digital Signature
+### Digital Signature
 ![Digital Signature](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/fake_winrar/winrardigitalsignature.png?raw=true)
 
-# Dynamic Analysis
+## Dynamic Analysis
 
-## ProcMon
+### ProcMon
 > Written File:
 >> C:\Users\dath\AppData\Local\Microsoft\CLR_v4.0_32\UsageLogs\AppLaunch.exe.log
 
 > Child process: 
 >> conhost.exe \??\C:\Windows\system32\conhost.exe 0xffffffff -ForceV1
 
-## RegShot
+### RegShot
 > Deleted one key: 
 >> HKU\S-1-5-21-1248556568-55694383-3693071177-1001\SOFTWARE\Microsoft\Windows\CurrentVersion\Search\JumplistData
 
@@ -87,7 +87,7 @@ Only 3 libraries; Interesting version, original file name and copyright info.
 > Runonce keys value added:
 >> HKLM\SYSTEM\ControlSet001\Services\bam\State\UserSettings\S-1-5-21-1248556568-55694383-3693071177-1001\\Device\HarddiskVolume2\Users\dath\Desktop\winrarfake.exe
 
-## Wireshark
+### Wireshark
 Lots of get requests over http traffic, tcp traffic is all garbled up. No post requests as of yet. Seems to be intended to pull down certificates. May have to check and see what this does when executing on the internet. Killed inetsim, the process is still on desktop, will shutdown and see if anything unusual happens.
 
 > Certificate pop-up after reboot: 
@@ -98,9 +98,9 @@ Ran process again to see if anything would come up in wireshark. Lets reset and 
 
 Still not seeing a whole lot, see some DNS requests to microsoft related domains, some ICMP pings.
 
-# Advanced Static Analysis
+## Advanced Static Analysis
 
-## Ghidra & Cutter
+### Ghidra & Cutter
 
 > Entry: 
 >> - Takes you to `FUN_00403f2e` function - has main function inside at bottom 
@@ -110,9 +110,9 @@ Still not seeing a whole lot, see some DNS requests to microsoft related domains
 
 ![Cutter1](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/fake_winrar/winrarcuttergraph.png?raw=true)
 
-# Advanced Dynamic Analysis
+## Advanced Dynamic Analysis
 
-## x32dbg
+### x32dbg
 Set breakpoints, after the system point, we hit entry bp.
 
 - Next we hit virtual Protect
@@ -144,7 +144,7 @@ At 8 virtual alloc bp’s, we then hit the IsDebugger API
     
 - Lets dump the one PE at `0x22200000`
 
-## PE-Bear
+### PE-Bear
 - May have dumped this one too early, won’t let me override a section
 - Still seems incomplete
 
@@ -153,7 +153,7 @@ After turning off bp for Virtual Alloc, we let process run.
 - So far, hanging in the process running with a specific dll; diasymreader.dll
 - The process doesn’t proceed any further
 
-## Yara Rule
+### Yara Rule
 ```java
 rule fake_winrar{
     

@@ -9,20 +9,20 @@ tags: [analysis, security, emotet]
 
 Emotet is a pervasive threat of malware that has many different attack vectors. In this analysis, a sample of Emotet will be examined along with the other 2 malware files that are part of the attack chain.
 
-# Static Analysis Emotet Excel File
+## Static Analysis Emotet Excel File
 
 ### [VirusTotal](https://www.virustotal.com/gui/file/ef2ce641a4e9f270eea626e8e4800b0b97b4a436c40e7af30aeb6f02566b809c)
 Hash: `ef2ce641a4e9f270eea626e8e4800b0b97b4a436c40e7af30aeb6f02566b809c`
 
 
-## Detect It Easy
+### Detect It Easy
 216.5k file size, Archive: Microsoft Compound(MS Office 97-2003 or MSI etc.).
 High level of entropy, `7.12275`, packed file.
 Using the file command, we can see that the author of the xls file is Gydar.
 
 ![Emotet DetectItEasy](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/detectiteasyemotetexcelfile.png?raw=true)
 
-## Floss
+### Floss
 Mostly junk strings extracted, but some interesting strings to pay attention to:
 
 - "URLDownloadToFil
@@ -99,13 +99,13 @@ Without knowing that password, we just gonna have to analyze differently.
 
 Interesting file written: `c2rx.sccd`
 
-# Dynamic Analysis Emotet Excel File
+## Dynamic Analysis Emotet Excel File
 
 In order to start dynamic analysis, we move the file over to the file path for 64 bit, and later than office 2016: `C:\Program Files\Microsoft Office\root\Templates`
 
 Now, we will get set up for several other things to happen, ProcMon, TCPView, Wireshark, and Regshot being the main tools to check for any changes, see what child processes spawn, and view any C2 connections out.
 
-## ProcMon
+### ProcMon
 After opening the file in the templates section, we get 4 pop ups immediately that show regsvr32.exe being exploited to execute 4 strange files, files we saw referenced earlier after doing a string dump:
 
 - C:\Windows\System32\regsvr32.exe ..\oxnv1.ooccxx
@@ -113,7 +113,7 @@ After opening the file in the templates section, we get 4 pop ups immediately th
 - C:\Windows\System32\regsvr32.exe ..\oxnv3.ooccxx
 - C:\Windows\System32\regsvr32.exe ..\oxnv4.ooccxx
 
-## Wireshark
+### Wireshark
 We can see an HTTP Get request method in wireshark, a reference to a string we had seen prior: Get Request: `hxxp://intolove.co.uk/wp-admin/FbGhiWtrEzrQ/`
 
 Another one: `hxxp://isc.net.ua/themes/3rU/`
@@ -126,7 +126,7 @@ We also see DNS requests to the above domains, and a couple of other interesting
 
 * `geringer-muehle[.]de`
 
-## RegShot
+### RegShot
 Not seeing any persistence registry written, likely due to the fact that this is in an isolated environment and we didn’t download additional payloads. 
 
 Now, time for system reset, and gonna let this system get on the internet to let it grab the other payloads. We can also do this on [tria.ge](https://tria.ge) to see what happens so we know what to expect.
@@ -147,14 +147,14 @@ Another interesting and important command to pay attention to: `C:\Windows\Syste
 
 A file this xls file is supposed to download is a dll file, which is a PE64 packed binary.
 
-# Static Analysis Emotet Trojan DLL
+## Static Analysis Emotet Trojan DLL
 
 ### [VirusTotal](https://www.virustotal.com/gui/file/bb444759e8d9a1a91a3b94e55da2aa489bb181348805185f9b26f4287a55df36)
 Hash: `bb444759e8d9a1a91a3b94e55da2aa489bb181348805185f9b26f4287a55df36`
 
 28 flagged imports. Cryptography is something referenced quite a bit and is flagged for this dll file. 35 flagged strings, with many other malicious strings, including some compressed strings. 
 
-## Detect It Easy
+### Detect It Easy
 Indicates this file is a PE64 file, but this has to be run as a dll as it is a linker file. 
 
 It has 24 different sections of base64 compressed content.
@@ -165,7 +165,7 @@ Interesting strings:
 * jkdefragscreensaver.exe
 * jkdefragcmd.exe
 
-# Dynammic Analysis Emotet Trojan DLL
+## Dynammic Analysis Emotet Trojan DLL
 
 Executing with rundll32.exe didn’t do anything, but when we register this dll, we get more action and activity:
 
@@ -243,27 +243,27 @@ Regsvr32.exe is cycling through multiple IP’s. Yep, part of the Epoch4 botnet.
 
 * ecs1.plain key: `MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQF90tsTY3Aw9HwZ6N9y5+be9XoovpqHyD6F5DRTl9THosAoePIs/e5AdJiYxhmV8Gq3Zw1ysSPBghxjZdDxY+Q==`
 
-# Advanced Static Analysis Emotet Trojan DLL
+## Advanced Static Analysis Emotet Trojan DLL
 
 (work in progress)
-## Ghidra & Cutter
+### Ghidra & Cutter
 Entry point → leads to FUN_180005f0c
 
 - this function, while not the “main”, appears important as it calls lots of other functions, including a function that using VirtualAlloc (FUN_18002d600)
 
-# Advanced Dynamic Analysis Emotet Trojan DLL
+## Advanced Dynamic Analysis Emotet Trojan DLL
 
 (work in progress)
 
-# Static Analysis IcedID DLL
+## Static Analysis IcedID DLL
 
 ### [VirusTotal](https://www.virustotal.com/gui/file/05a3a84096bcdc2a5cf87d07ede96aff7fd5037679f9585fee9a227c0d9cbf51)
 Hash: `05a3a84096bcdc2a5cf87d07ede96aff7fd5037679f9585fee9a227c0d9cbf51`
 
-## Detect It Easy
+### Detect It Easy
 Pe64; dll linker file, not packed.
 
-## PEStudio
+### PEStudio
 15 flagged imports. 
 ![IcedId PEStudio](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/iceidpestudioimage.png?raw=true)
 
@@ -275,16 +275,16 @@ Interesting strings:
 - iec61966-2-1
 - minkernel\crts\ucrt\inc\corecrt_internal_strtox.h
 
-# Dynamic Analysis IcedID DLL
+## Dynamic Analysis IcedID DLL
 
-## ProcMon
+### ProcMon
 Not many processes you see in Procmon, need to dig around some more to find interesting changes. 
 
 We do see a lot of files touched, lots of reg mods, and TCP connections in ProcMon:
 
 - Lots of calls out over TCP traffic.
 
-## Wireshark
+### Wireshark
 Some interesting DNS requests:
 
 - `bayernbadabum.com`
@@ -298,20 +298,20 @@ Some interesting DNS requests:
 - `207.22.221.23.in-addr.arpa`
 - `85.65.42.20.in-addr.arpa`
 
-## RegShot
+### RegShot
 No persistence picked up by Regshot. 
 
 The dll file did not self-delete. 
 
 Dumped sample into tria.ge, it seems to run through regsvr32.exe like the trojan dll before. It had a pop up indicating something wrong with Microsoft Register Server. We let the analysis run for 5 minutes.
 
-# Advanced Static Analysis IcedID DLL
+## Advanced Static Analysis IcedID DLL
 
 (work in progress)
-## Ghidra & Cutter
+### Ghidra & Cutter
 Entry point → FUN_180009e10
 
 - the functions labeled with FUN_ don’t seem to do much, but the dllmain_raw and `dllmain_crt_dispatch` appear to have some things to execute.
 
-# Advanced Dynamic Analysis IcedID DLL
+## Advanced Dynamic Analysis IcedID DLL
 (work in progress)

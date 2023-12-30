@@ -9,17 +9,17 @@ tags: [analysis, security, sapphire]
 
 Sapphire Stealer is an Open Source information stealer, observed across multiple repositories. The purpose of this information stealer is to steal browser data and other data in files, and then export this data to a telegram bot. In this blog, a sample of this stealer malware will be analyzed. 
 
-# Static Analysis
+## Static Analysis
 
 ### [VirusTotal](https://www.virustotal.com/gui/file/f70651906b9cbf25b3db874e969af7a14caac21bf1db328e4664db54566a15b0)
 Hash: `f70651906b9cbf25b3db874e969af7a14caac21bf1db328e4664db54566a15b0`
 
-## Detect It Easy
+### Detect It Easy
 This file is a Portable Executable 32-bit, .NET linker type of file, with a high level of entropy at 7.98.
 
 ![DetectItEasy](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/detectiteasysapphire.png?raw=true)
 
-## Floss
+### Floss
 
 Interesting strings grabbed with Floss.exe: 
 
@@ -37,7 +37,7 @@ Interesting strings grabbed with Floss.exe:
 - Browser\User Data
 - sapphire\ by barion @dark_legion89
 
-## PeStudio
+### PeStudio
 
 Library:
 
@@ -59,12 +59,12 @@ Library:
 
 Has a copyright and file version. Sapphire.exe, 1.0.0.0, Copyright 2022.
 
-# Dynamic Analysis
+## Dynamic Analysis
 Right when it executes, command prompt comes up right away, and a screenshot was taken of the desktop. 
 
 ![executionerrors](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/sapphireerrorexecution.png?raw=true)
 
-## ProcMon
+### ProcMon
 
 We see a huge amount of processes execute, conhost.exe and werfault.exe ran in conjunction.
 
@@ -72,11 +72,11 @@ We see a huge amount of processes execute, conhost.exe and werfault.exe ran in c
 
 - Log file written to path: `C:\Users\dath\AppData\Local\Temp`
 
-## RegShot
+### RegShot
 
 Shows over 20,000 keys deleted. Don’t see any persistence added.
 
-## Wireshark
+### Wireshark
 
 Seems to be http Get requests related to pulling down a specific certificate:
 
@@ -96,11 +96,11 @@ After doing some debugging, there seems to be a set of errors that prevent this 
 
 ![moreerrors](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/errorsduringdebugsapphire.png?raw=true)
 
-# Advanced Static Analysis
+## Advanced Static Analysis
 
 Due to this malware created in C# language, we can analyze this file through using a tool called "dnSpy."
 
-## dnSpy
+### dnSpy
 
 Inside of the code, we can see more references to the costura and the Fody, confirms the use of this compression. Gives us the versions used.
 
