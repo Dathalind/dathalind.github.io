@@ -116,7 +116,7 @@ After opening the file in the templates section, we get 4 pop ups immediately th
 ## Wireshark
 We can see an HTTP Get request method in wireshark, a reference to a string we had seen prior: Get Request: `hxxp://intolove.co.uk/wp-admin/FbGhiWtrEzrQ/`
 
-Another one: [`hxxp://isc.net.ua/themes/3rU/`](hxxp://isc.net.ua/themes/3rU/)
+Another one: `hxxp://isc.net.ua/themes/3rU/`
 
 No interesting things on the sites from urlscan.io.
 
