@@ -18,13 +18,13 @@ Hash: `0c6f444c6940a3688ffc6f8b9d5774c032e3551ebbccb64e4280ae7fc1fac479`
 ## Detect It Easy
 
 ![Blackcat DetectItEasy](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/blackcat/blackcatdetectiteasy.png?raw=true)
-`PE32 that is packed, 7.1115 entropy.`
+PE32 that is packed, 7.1115 entropy.
 
 ## PE Studio
-`67 flagged imports, Cryptography is flagged as a library with this binary.DEP, CFG, ASLR are on.`
+67 flagged imports, Cryptography is flagged as a library with this binary.DEP, CFG, ASLR are on.
 
 ## Floss
-`Interesting strings (sites defanged):`
+Interesting strings (sites defanged):
 
 - hxxps://github.com/clap-rs/clap/issues
 - /cargo/registry/src/github.com-1ecc6299db9ec823/indexmap-1.7.0/src/map/core/
@@ -51,7 +51,7 @@ Dropping Note and Wallpaper Image
 # Dynamic Analysis
 
 ## ProcMon
-`After initial execution, it didn’t encrypt any files, maybe because it has an internet connection. Lets try killing it to see if it changes anything. Not seeing any interesting files written.`
+After initial execution, it didn’t encrypt any files, maybe because it has an internet connection. Lets try killing it to see if it changes anything. Not seeing any interesting files written.
 
 - Restoring, doing regshot again. 
 - Running as admin on the process. No inetsim.
@@ -62,11 +62,11 @@ Dropping Note and Wallpaper Image
 ## TCP View
 ![Blackcat TCPView](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/blackcat/blackcattcpview.png?raw=true)
 
-`Rebooting.`
+Rebooting.
 
-`Still no sign of the drive being encrypted.` 
+- Still no sign of the drive being encrypted.
 
-`We couldn’t get things to run because they are using an access-token to prevent analysis, however, supply any string and it allows us to actually activate the binary.`
+- We couldn’t get things to run because they are using an access-token to prevent analysis, however, supply any string and it allows us to actually activate the binary.
 
 ## Files Encrypted
 - There we go, got it to finally run, dropped the files and changed the wallpapper; Reboot to make sure its still there
@@ -92,14 +92,14 @@ Dropping Note and Wallpaper Image
 # Advanced Static Analysis
 
 ## Ghidra & Cutter
-`Entry point, has a few functions for us to check out, lets see about following the first jump point. `
+Entry point, has a few functions for us to check out, lets see about following the first jump point.
 
-`HeapFree, 3 pushes before this call.`
+- HeapFree, 3 pushes before this call.
 
 # Advanced Dynamic Analysis
 
 ## x32dbg
-`After loading, we hit entry point. Then, Virtual protect.`
+After loading, we hit entry point. Then, Virtual protect.
 
 - only 2 hits on that, then it exits the application.
 - value was 01
