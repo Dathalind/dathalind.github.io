@@ -104,10 +104,10 @@ Due to this malware created in C# language, we can analyze this file through usi
 
 Inside of the code, we can see more references to the costura and the Fody, confirms the use of this compression. Gives us the versions used.
 
-We can see an important reference to stealing user data, function “GetUserData”.
+We can see an important reference to stealing user data, function `“GetUserData”`.
 
 - There is a boolean operation here, where it checks for certain directory browser path’s existing, and if they do exist, the function will return true.
-- It also checks if the text contains the word “Profile”, and will add it to a list of data.
+- It also checks if the text contains the word `“Profile”`, and will add it to a list of data.
 
 ![userdata](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/dnspystealuserdatasapphire.png?raw=true)
 

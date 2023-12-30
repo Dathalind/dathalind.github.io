@@ -60,11 +60,11 @@ Only 3 libraries; Interesting version, original file name and copyright info.
 
 ## UTF-strings
 > C:.NET.0.30319.exe 
->> InternalName - AJIfy80xO6tP 
+>> InternalName - `AJIfy80xO6tP` 
 
 >> LegalCopyright Uganda Telecom Limited (UTL) All rights reserved. LegalTrademarks Uganda Telecom Limited (UTL) Trademarks 
 
->> OriginalFilename MjrVL53K.exe 
+>> OriginalFilename `MjrVL53K.exe`
 
 ## Digital Signature
 ![Digital Signature](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/fake_winrar/winrardigitalsignature.png?raw=true)
@@ -103,8 +103,8 @@ Still not seeing a whole lot, see some DNS requests to microsoft related domains
 ## Ghidra & Cutter
 
 > Entry: 
->> - Takes you to FUN_00403f2e function - has main function inside at bottom 
->> - FUN_00402160 - converted to the winmain 
+>> - Takes you to `FUN_00403f2e` function - has main function inside at bottom 
+>> - `FUN_00402160` - converted to the winmain 
 >> - Some unusual strings in this location 
 >> - `“Y0UsfKyxz3czqSZ9O50fhz6rog” - “2RQTIguQ46XiLms9” - “teLqNO0uYvKpFMesAW9p5OpnNlVZ” - “ZwYo4fCLKuUixSBe3MQTHIG6M2kda9g” - “pWgQQcDcDEFti2IMtb6y” - “Hohq04nEGcHlah” `
 
@@ -118,7 +118,7 @@ Set breakpoints, after the system point, we hit entry bp.
 - Next we hit virtual Protect
 - One run through, we get to Virtual Alloc
     - Memory space is open
-    - we follow in dump 1, we see an executable, 0x2220000
+    - we follow in dump 1, we see an executable, `0x2220000`
 - back to virtual protect
     - doesn’t seem to be doing anything interesting yet
     - could be loading or writing data from a dll, different sections
@@ -127,22 +127,22 @@ Set breakpoints, after the system point, we hit entry bp.
     - following dump 2, address near the previous, 0x2300000, empty
     - fills up with a bunch of FF’s, nothing interesting
     - seems to be setting up additional memory spaces
-    - 0x2301000 is empty still even after going back to VirtualAlloc
+    - `0x2301000` is empty still even after going back to VirtualAlloc
     
-    At 8 virtual alloc bp’s, we then hit the IsDebugger API
+At 8 virtual alloc bp’s, we then hit the IsDebugger API
     
-    - ran till return, value is 0, should be good to continue
-    - back to VirtualAlloc
-    - another empty space, 0x2313000
-        - dumped some code, possible shellcode
-    - more space being allocated
-    - small bits of code being spit out to other addresses, scattered
-    - is there any more code that is worth looking at with this?
-    - 16 bp’s with VirtualAlloc
+- ran till return, value is 0, should be good to continue
+- back to VirtualAlloc
+- another empty space, `0x2313000`
+    - dumped some code, possible shellcode
+- more space being allocated
+- small bits of code being spit out to other addresses, scattered
+- is there any more code that is worth looking at with this?
+- 16 bp’s with VirtualAlloc
     
-    - Using Process Hacker, we can see the executable has conhost.exe running as child process
+- Using Process Hacker, we can see the executable has conhost.exe running as child process
     
-    - Lets dump the one PE at 0x22200000
+- Lets dump the one PE at `0x22200000`
 
 ## PE-Bear
 - May have dumped this one too early, won’t let me override a section

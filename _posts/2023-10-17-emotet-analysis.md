@@ -17,7 +17,7 @@ Hash: `ef2ce641a4e9f270eea626e8e4800b0b97b4a436c40e7af30aeb6f02566b809c`
 
 ## Detect It Easy
 216.5k file size, Archive: Microsoft Compound(MS Office 97-2003 or MSI etc.).
-High level of entropy, 7.12275, packed file.
+High level of entropy, `7.12275`, packed file.
 Using the file command, we can see that the author of the xls file is Gydar.
 
 ![Emotet DetectItEasy](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/detectiteasyemotetexcelfile.png?raw=true)
@@ -52,7 +52,7 @@ With 7-zip, we were able to drop 3 additional files onto the host:
 
 Taking a look at those files quickly, it seems like the Document summary and Summary Information both have some encrypted data, but are relatively small. 
 
-The workbook file seems to have a huge amount of data, encrypted or machine code that is not able to be analyzed much further right now. We do see the string “MZ” come up in multiple places, but its hard to say if that actually signifies an executable packed in this file. 
+The workbook file seems to have a huge amount of data, encrypted or machine code that is not able to be analyzed much further right now. We do see the string `“MZ”` come up in multiple places, but its hard to say if that actually signifies an executable packed in this file. 
 
 * Going back and checking with DetectItEasy, all 3 new files are classified as “Binary”.
 
@@ -71,7 +71,7 @@ RETURN()e
 ```
 
 Looking through the individual sheets, most are uninteresting or empty, but Sheet 4 had some interesting data:
-
+```
 - "s://audioselec.com/abo",56656436466735
     - "ut/dDw5ggtyMojggTqhc/",7656364755466430
 - "s://geringer-mue",144552434315
@@ -80,6 +80,7 @@ Looking through the individual sheets, most are uninteresting or empty, but Shee
     - "p-admin/FbGhiWtrEzrQ/",464253243255325
 - "://isc.n",574354525236
     - "[et[.]ua/themes/3rU/](hxxp://et.ua/themes/3rU/)",645422525431
+```
 
 These are labeled with 1 through 4, the top much reference the other half below it. Obfuscation by splitting these urls in half. 
 
