@@ -17,7 +17,7 @@ Hash: `f70651906b9cbf25b3db874e969af7a14caac21bf1db328e4664db54566a15b0`
 ## Detect It Easy
 This file is a Portable Executable 32-bit, .NET linker type of file, with a high level of entropy at 7.98.
 
-![DetectItEasy](../../img/sapphire-stealer/detectiteasy.png)
+![DetectItEasy](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/detectiteasysapphire.png?raw=true)
 
 ## Floss
 
@@ -55,14 +55,14 @@ Library:
 
 31 flagged imports:
 
-![PeStudio](../../img/sapphire-stealer/PeStudio.png)
+![PeStudio](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/pestudiosapphire.png?raw=true)
 
 Has a copyright and file version. Sapphire.exe, 1.0.0.0, Copyright 2022.
 
 # Dynamic Analysis
 Right when it executes, command prompt comes up right away, and a screenshot was taken of the desktop. 
 
-![executionerrors](../../img/sapphire-stealer/executionerrors.png)
+![executionerrors](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/sapphireerrorexecution.png?raw=true)
 
 ## ProcMon
 
@@ -82,19 +82,19 @@ Seems to be http Get requests related to pulling down a specific certificate:
 
 - `hxxp://ocsp.digicert.com/MFEwTzBNMEswSTAJBgUrDgMCGgUABBT3xL4LQLXDRDM9P665TW442vrsUQQUReuir%2FSSy4IxLVGLp6chnfNtyA8CEAQJGBtf1btmdVNDtW%2BVUAg%3D`
 
-- We can also see the call to telegram api:
+We can also see the call to telegram api:
 
-![telegramapi](../../img/sapphire-stealer/telegramapi.png)
+![telegramapi](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/wiresharktelegramapicallssapphire.png?raw=true)
 
-- We also see post requests made to update.googleapis.com: 
+We also see post requests made to update.googleapis.com: 
 
-![postrequests](../../img/sapphire-stealer/postrequests.png)
+![postrequests](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/wiresharkpostrequests.png?raw=true)
 
-- Checking to see if anything is new after restart. Nothing new.
+Checking to see if anything is new after restart. Nothing new.
 
 After doing some debugging, there seems to be a set of errors that prevent this malware from running correctly:
 
-![moreerrors](../../img/sapphire-stealer/moreerrors.png)
+![moreerrors](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/errorsduringdebugsapphire.png?raw=true)
 
 # Advanced Static Analysis
 
@@ -109,7 +109,7 @@ We can see an important reference to stealing user data, function “GetUserData
 - There is a boolean operation here, where it checks for certain directory browser path’s existing, and if they do exist, the function will return true.
 - It also checks if the text contains the word “Profile”, and will add it to a list of data.
 
-![userdata](../../img/sapphire-stealer/userdata.png)
+![userdata](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/dnspystealuserdatasapphire.png?raw=true)
 
 There is a Dictionary that is checking for multiple types of Browsers, huge list of different browsers. 
 
@@ -121,7 +121,7 @@ There is a Dictionary that is checking for multiple types of Browsers, huge list
 >> - Program: contains the main function to execute the different operations
     >>> seems to be a bug, may need to add a line of code to get this to actually call the password stealing: `loginData.AddRange(Passwords(p.Value, p.Key));`
 
-![mainfunction](../../img/sapphire-stealer/mainfunction.png)
+![mainfunction](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/dnspymainfuncsapphire.png?raw=true)
 
 > The main program appears to go in this order:
 >> - Grabbing browser data, saving to a text file and ready to be added to an archive folder.
@@ -134,9 +134,9 @@ There is a Dictionary that is checking for multiple types of Browsers, huge list
 
 > SendLog: appears to be the class ready to create a log of certain data on the machine, but not the browser data; seems to be after IP data, Username, screenshot, OS version, GPU, etc.
 
-![SendLog](../../img/sapphire-stealer/sendlog.png)
+![SendLog](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/dnspydataextractionsapphire.png?raw=true)
 
 > Telegram: this seems to be the main method of extraction from the device, upload to a telegram bot, has specific  data referenced to which botClient to send data to. 
 >> There also seem to be built in functions set up to decrypt saved passwords from the machine. 
 
-![Upload](../../img/sapphire-stealer/upload.png)
+![Upload](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/dnspytelegramsapphire.png?raw=true)
