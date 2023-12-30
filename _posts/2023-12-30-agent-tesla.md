@@ -106,10 +106,10 @@ Different section names are obfuscated as random characters, will take some digg
 - under namespace `A`, class `C`, we see some encryption metehods used and the CipherMode ECB, with PaddingMode PKC57
     - this appears to be the encryption/decryption methods being utilized to pull the data out
 - class `“D 0x0200000F”` under namespace `“A”` has additional windows api calls to create hooks at the entry point of the program
-- class AccountConfiguration appears to be very interesting, looks to be stealing data from the host such as account name, avatar, creation time, and possibly password stealing
-- class MailAccountConfiguration
-- class MailAddress
-- class SmtpAccountConfiguration
+- class `AccountConfiguration` appears to be very interesting, looks to be stealing data from the host such as account name, avatar, creation time, and possibly password stealing
+- class `MailAccountConfiguration`
+- class `MailAddress`
+- class `SmtpAccountConfiguration`
 
 # Advanced Dynamic Analysis
 
