@@ -17,7 +17,7 @@ Hash: `0c6f444c6940a3688ffc6f8b9d5774c032e3551ebbccb64e4280ae7fc1fac479`
 
 ## Detect It Easy
 
-![Blackcat DetectItEasy]()
+![Blackcat DetectItEasy](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/blackcat/blackcatdetectiteasy.png?raw=true)
 `PE32 that is packed, 7.1115 entropy.`
 
 ## PE Studio
@@ -44,9 +44,9 @@ Dropping Note and Wallpaper Image
 - broadcasting=
 - 127.0.0.1:
 
-![Blackcat FlossStrings]()
+![Blackcat FlossStrings](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/blackcat/blackcatstrings.png?raw=true)
 
-![Blackcat PEStudioStrings]()
+![Blackcat PEStudioStrings](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/blackcat/blackcatpestudio.png?raw=true)
 
 # Dynamic Analysis
 
@@ -60,7 +60,7 @@ Dropping Note and Wallpaper Image
 - Reboot shows no visible difference. Ran FakeNet-NG, not seeing anything interesting either for this.
 
 ## TCP View
-![Blackcat TCPView]()
+![Blackcat TCPView](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/blackcat/blackcattcpview.png?raw=true)
 
 `Rebooting.`
 
@@ -76,7 +76,7 @@ Dropping Note and Wallpaper Image
 - definitely looks like it encrypted files finally. it encrypted my visual studio code app I think. Rebooting showed it was still there.
 - RECOVER-sykffle-FILES.txt on Desktop with image.
 
-![Blackcat EncryptionMessage]()
+![Blackcat EncryptionMessage](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/blackcat/blackcatencryptedmessage.png?raw=true)
 
 > Back to ProcMon:
 >> Using Procmon, we see some additional things firing off from wmic and fsutil.exe; also conhost.exe and git.exe.
@@ -106,7 +106,7 @@ Dropping Note and Wallpaper Image
 - We changed it to 0, but didn’t help anything.
 - looks like we may need a specific key in order to get things to run correctly
 ## Yara Rule
-```
+```java
 rule black_cat_ransom{
     
     meta:
@@ -129,6 +129,5 @@ rule black_cat_ransom{
         $string3 and
         $string4 and
         $string5)
-
 }
 ```
