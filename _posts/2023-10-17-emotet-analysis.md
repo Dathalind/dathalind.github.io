@@ -20,7 +20,7 @@ Hash: `ef2ce641a4e9f270eea626e8e4800b0b97b4a436c40e7af30aeb6f02566b809c`
 High level of entropy, 7.12275, packed file.
 Using the file command, we can see that the author of the xls file is Gydar.
 
-![Emotet DetectItEasy](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/detectiteasyxls.png?raw=true)
+![Emotet DetectItEasy](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/detectiteasyemotetexcelfile.png?raw=true)
 
 ## Floss
 Mostly junk strings extracted, but some interesting strings to pay attention to:
@@ -60,7 +60,7 @@ The workbook file seems to have a huge amount of data, encrypted or machine code
 
 Opening the excel file, we have a warning message, telling us where we need to copy the file to and open in order to bypass the protected view in place:
 
-![Xls Message](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/xlsmessage.png?raw=true)
+![Xls Message](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/warningmessageexcelfile.png?raw=true)
 
 So trying to open the Workbook that was extracted, it has some interesting strings inside that clue is in more to the intentions. 
 
@@ -92,7 +92,7 @@ Also some 36 character stings referenced: `084F01FA-E634-4D77-83EE-074817C03581`
 A reference to a driver:
 `hxxps://download-drivers.net/msi/laptop/msi-ms-7a34?devID=084F01FA-E634-4D77-83EE-074817C03581`
 
-![Protection of Excel File](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/protection.png?raw=true)
+![Protection of Excel File](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/protectedworkbookmessage.png?raw=true)
 
 Without knowing that password, we just gonna have to analyze differently.
 
@@ -264,7 +264,7 @@ Pe64; dll linker file, not packed.
 
 ## PEStudio
 15 flagged imports. 
-![IcedId PEStudio](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/icedidpestudio.png?raw=true)
+![IcedId PEStudio](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/iceidpestudioimage.png?raw=true)
 
 Some weird sentence string inside of the file, doesn’t mean anything. Lots of repeat strings, junk strings. 
 
