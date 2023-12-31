@@ -124,12 +124,12 @@ Set breakpoints, after the system point, we hit entry bp.
     - could be loading or writing data from a dll, different sections
     - hit virtual protect 11 times, nothing interesting, turning off bp
 - back to virtual alloc
-    - following dump 2, address near the previous, 0x2300000, empty
+    - following dump 2, address near the previous, `0x2300000`, empty
     - fills up with a bunch of FF’s, nothing interesting
     - seems to be setting up additional memory spaces
     - `0x2301000` is empty still even after going back to VirtualAlloc
     
-At 8 virtual alloc bp’s, we then hit the IsDebugger API
+At 8 virtual alloc bp’s, we then hit the `IsDebugger` API
     
 - ran till return, value is 0, should be good to continue
 - back to VirtualAlloc
@@ -139,9 +139,7 @@ At 8 virtual alloc bp’s, we then hit the IsDebugger API
 - small bits of code being spit out to other addresses, scattered
 - is there any more code that is worth looking at with this?
 - 16 bp’s with VirtualAlloc
-    
 - Using Process Hacker, we can see the executable has conhost.exe running as child process
-    
 - Lets dump the one PE at `0x22200000`
 
 ### PE-Bear

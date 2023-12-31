@@ -36,7 +36,7 @@ Lots of strings, some seemingly base64 strings contained inside, other interesti
 There seems to be some fake checks for a valid username, and some string references to gear items for a RPG type of game.
 
 ### PEStudio
-Indicators page flags the compiler timestamp, as being 2065 as the year this was compiled. We see original file name “IEnumUnkno.exe”.
+Indicators page flags the compiler timestamp, as being `2065` as the year this was compiled. We see original file name `“IEnumUnkno.exe”`.
 
 No flagged imports. 
 
@@ -87,9 +87,9 @@ Different section names are obfuscated as random characters, will take some digg
     - method `iARGDbDs5`; has some interesting code, big block of what looks to be a large string text
     - contains `4D5A` at the start, it is a PE, contained with some unicode bytes
     - perhaps it will pull this out and decode it later in execution?
-    - There is additional obfuscation for it, which it does a replace of the code block “@\u200c” for “000”.
+    - There is additional obfuscation for it, which it does a replace of the code block `“@\u200c”` for `“000”`.
 - Namespace `olDHtbgqTWwIPBKQWn`
-    - this contains some different methods, where it references a lot of unicode bytes that just are for adding a space “\u0020”
+    - this contains some different methods, where it references a lot of unicode bytes that just are for adding a space `“\u0020”`
 - Namespace `fjM9JnK3XjjvimtWCg`
     - contains methods that could be used as a way to stop debugging this executable
 - We renamed some namespace to help get a better sense of what is going on, it is still mostly a mystery, with there being some of these methods only related to the game stuff that is garbage, but we have the interesting unicode stuff
@@ -99,10 +99,10 @@ Different section names are obfuscated as random characters, will take some digg
 - Looking at namespace `A` with internal class `“b”`, we see some more interesting functions here
     - inside of internal class `“b”`, we also see a call to have the application run `“Application.Run();”`
     - dll imports of user32 and ntdll, it is grabbing some user input
-    - Further down in the code, we see a long sleep for 1000, followed by the next section which appears to enumerating data from the user device
+    - Further down in the code, we see a long sleep for `1000`, followed by the next section which appears to enumerating data from the user device
     - the `function b()` appears to be set up to execute httpwebrequests, grabbing a credential cache, and is looking for a response stream
 - When asking for the program entry point, it is going to namespace `“H8ByT4o9A2rvy7R3kC”`, class `“NUSpMfsvFIoS6G7cAh”`
-- Additionally, we have some steganography being utilized, where it contains a packed image inside of the Resources page “Game.Properties.Resources.resources”, 331739 bytes
+- Additionally, we have some steganography being utilized, where it contains a packed image inside of the Resources page `“Game.Properties.Resources.resources”`, 331739 bytes
 - under namespace `A`, class `C`, we see some encryption metehods used and the CipherMode ECB, with PaddingMode PKC57
     - this appears to be the encryption/decryption methods being utilized to pull the data out
 - class `“D 0x0200000F”` under namespace `“A”` has additional windows api calls to create hooks at the entry point of the program

@@ -54,7 +54,7 @@ Taking a look at those files quickly, it seems like the Document summary and Sum
 
 The workbook file seems to have a huge amount of data, encrypted or machine code that is not able to be analyzed much further right now. We do see the string `“MZ”` come up in multiple places, but its hard to say if that actually signifies an executable packed in this file. 
 
-* Going back and checking with DetectItEasy, all 3 new files are classified as “Binary”.
+* Going back and checking with DetectItEasy, all 3 new files are classified as `“Binary”`.
 
 * The Workbook appear to be the contents we extracted from the original xls file. 
 
@@ -86,7 +86,7 @@ These are labeled with 1 through 4, the top much reference the other half below 
 
 * Sheet5 is empty. Same for Sheet6, still not finding the Macros.
 
-Using a python script called Oledump.py, we can extract the stream of data from the xls file, and we can search through the output to find the interesting references such as urldownloadtofile. We also see a Microsoft Print to PDF string referenced.
+Using a python script called `Oledump.py`, we can extract the stream of data from the xls file, and we can search through the output to find the interesting references such as `urldownloadtofile`. We also see a Microsoft Print to PDF string referenced.
 
 Also some 36 character stings referenced: `084F01FA-E634-4D77-83EE-074817C03581`
 
@@ -97,7 +97,7 @@ A reference to a driver:
 
 Without knowing that password, we just gonna have to analyze differently.
 
-Interesting file written: `c2rx.sccd`
+- Interesting file written: `c2rx.sccd`
 
 ## Dynamic Analysis Emotet Excel File
 
@@ -152,7 +152,7 @@ A file this xls file is supposed to download is a dll file, which is a PE64 pack
 ### [VirusTotal](https://www.virustotal.com/gui/file/bb444759e8d9a1a91a3b94e55da2aa489bb181348805185f9b26f4287a55df36)
 Hash: `bb444759e8d9a1a91a3b94e55da2aa489bb181348805185f9b26f4287a55df36`
 
-28 flagged imports. Cryptography is something referenced quite a bit and is flagged for this dll file. 35 flagged strings, with many other malicious strings, including some compressed strings. 
+`28` flagged imports. Cryptography is something referenced quite a bit and is flagged for this dll file. `35` flagged strings, with many other malicious strings, including some compressed strings. 
 
 ### Detect It Easy
 Indicates this file is a PE64 file, but this has to be run as a dll as it is a linker file. 
@@ -173,7 +173,7 @@ Executing with rundll32.exe didn’t do anything, but when we register this dll,
 
 Hash: `bb444759e8d9a1a91a3b94e55da2aa489bb181348805185f9b26f4287a55df36`
 
-It copies it self here for persistence. Not seeing a reg key modified for startup or persistence. It self deletes from original location. 
+It copies it self here for persistence. Not seeing a reg key modified for startup or persistence. It `self deletes` from original location. 
 
 Lots of attempted TCP Connections. Keeps interacting with this dll file: `C:\Windows\System32\OnDemandConnRouteHelper.dll`
 
@@ -247,9 +247,9 @@ Regsvr32.exe is cycling through multiple IP’s. Yep, part of the Epoch4 botnet.
 
 (work in progress)
 ### Ghidra & Cutter
-Entry point → leads to FUN_180005f0c
+Entry point → leads to `FUN_180005f0c`
 
-- this function, while not the “main”, appears important as it calls lots of other functions, including a function that using VirtualAlloc (FUN_18002d600)
+- this function, while not the “main”, appears important as it calls lots of other functions, including a function that using VirtualAlloc (`FUN_18002d600`)
 
 ## Advanced Dynamic Analysis Emotet Trojan DLL
 
@@ -261,7 +261,7 @@ Entry point → leads to FUN_180005f0c
 Hash: `05a3a84096bcdc2a5cf87d07ede96aff7fd5037679f9585fee9a227c0d9cbf51`
 
 ### Detect It Easy
-Pe64; dll linker file, not packed.
+File is a 64-bit Portable Executable; dll linker file, not packed.
 
 ### PEStudio
 15 flagged imports. 
@@ -309,7 +309,7 @@ Dumped sample into tria.ge, it seems to run through regsvr32.exe like the trojan
 
 (work in progress)
 ### Ghidra & Cutter
-Entry point → FUN_180009e10
+Entry point → `FUN_180009e10`
 
 - the functions labeled with FUN_ don’t seem to do much, but the dllmain_raw and `dllmain_crt_dispatch` appear to have some things to execute.
 

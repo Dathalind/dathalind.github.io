@@ -15,7 +15,7 @@ Sapphire Stealer is an Open Source information stealer, observed across multiple
 Hash: `f70651906b9cbf25b3db874e969af7a14caac21bf1db328e4664db54566a15b0`
 
 ### Detect It Easy
-This file is a Portable Executable 32-bit, .NET linker type of file, with a high level of entropy at 7.98.
+This file is a 32-bit Portable Executable, .NET linker type of file, with a high level of entropy at `7.98`.
 
 ![DetectItEasy](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/sapphire_stealer/detectiteasysapphire.png?raw=true)
 
@@ -102,7 +102,7 @@ Due to this malware created in C# language, we can analyze this file through usi
 
 ### dnSpy
 
-Inside of the code, we can see more references to the costura and the Fody, confirms the use of this compression. Gives us the versions used.
+Inside of the code, we can see more references to the `costura` and the `Fody`, confirms the use of this compression. Gives us the versions used.
 
 We can see an important reference to stealing user data, function `“GetUserData”`.
 

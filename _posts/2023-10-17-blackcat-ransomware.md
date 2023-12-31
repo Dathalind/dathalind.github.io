@@ -18,10 +18,10 @@ Hash: `0c6f444c6940a3688ffc6f8b9d5774c032e3551ebbccb64e4280ae7fc1fac479`
 ### Detect It Easy
 
 ![Blackcat DetectItEasy](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/blackcat/blackcatdetectiteasy.png?raw=true)
-PE32 that is packed, 7.1115 entropy.
+This binary is a 32-bit Portable executable that is packed, `7.1115` entropy.
 
 ### PE Studio
-67 flagged imports, Cryptography is flagged as a library with this binary.DEP, CFG, ASLR are on.
+`67` flagged imports, Cryptography is flagged as a library with this binary. DEP, CFG, ASLR are on.
 
 ### Floss
 Interesting strings (sites defanged):
@@ -37,7 +37,7 @@ Dropping Note and Wallpaper Image
 - src/bin/encrypt_app/app.rs
 - `hxxp://zujgzbu5y64xbmvc42addp4lxkoosb4tslf5mehnh7pvqjpwxn5gokyd.onion/b21e1fb6-ff88-425b-8339-3523179a1e3e/886cf430a907bbe9a3fd38fb704d524dbd199c1b042ad6f65dc72ad78704e21\\n\\n\\n`
 - Message about key: hxxp://mu75ltv3lxd24dbyu6gtvmnwybecigs5auki7fces437xvvflzva2nqd.onion/?access-key=${ACCESS_KEY}
-- :"Important files on your system was ENCRYPTED.\nSensitive data on your system was DOWNLOADED.\nTo recover your files and prevent publishing of sensitive information follow instructions in \"${NOTE_FILE_NAME}\" file.”
+- :`"Important files on your system was ENCRYPTED.\nSensitive data on your system was DOWNLOADED.\nTo recover your files and prevent publishing of sensitive information follow instructions in \"${NOTE_FILE_NAME}\" file.”`
 - "default_file_cipher":"Best","credentials":[["KELLERSUPPLY\\Administrator","d@gw00d"],["KELLERSUPPLY\\AdminRecovery","K3ller!$Supp1y"],[".\\Administrator","d@gw00d"],[".\\Administrator","K3ller!$Supp1y"]]
 - rebroadcast_cache_to=
 - locker::core::clustersrc/core/cluster.rs
@@ -56,7 +56,7 @@ After initial execution, it didn’t encrypt any files, maybe because it has an 
 - Restoring, doing regshot again. 
 - Running as admin on the process. No inetsim.
 - Still no clear signs, Wireshark is only detecting certain ICMP requests for Microsoft related sites. Lets power off and power back on to see if there is anything different on startup. 
-- No currentversion\run keys; no startup or runonce. Nothing sticks out as something interesting from regshot. Rebooting.
+- No `currentversion\run` keys; no startup or runonce. Nothing sticks out as something interesting from regshot. Rebooting.
 - Reboot shows no visible difference. Ran FakeNet-NG, not seeing anything interesting either for this.
 
 ### TCP View
@@ -66,27 +66,24 @@ Rebooting.
 
 - Still no sign of the drive being encrypted.
 
-- We couldn’t get things to run because they are using an access-token to prevent analysis, however, supply any string and it allows us to actually activate the binary.
+- We couldn’t get things to run because they are using an `access-token` to prevent analysis, however, `supply any string` and it allows us to actually activate the binary.
 
 ### Files Encrypted
 There we go, got it to finally run, dropped the files and changed the wallpapper; Reboot to make sure its still there
-- cat.exe --child --verbose --access-token cats1234 —paths C:\Users
+- `cat.exe --child --verbose --access-token cats1234 —paths C:\Users`
 - Does not work as propogated.
-- so you have to specify a file path to propogate through, looks like it finally worked with sending as a child process, then it makes files have a .sykffle file extension
+- so you have to specify a file path to propogate through, looks like it finally worked with sending as a child process, then it makes files have a `.sykffle` file extension
 - definitely looks like it encrypted files finally. it encrypted my visual studio code app I think. Rebooting showed it was still there.
-- RECOVER-sykffle-FILES.txt on Desktop with image.
+- `RECOVER-sykffle-FILES.txt` on Desktop with image.
 
 ![Blackcat EncryptionMessage](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/blackcat/blackcatencryptedmessage.png?raw=true)
 
 > Back to ProcMon:
 >> Using Procmon, we see some additional things firing off from wmic and fsutil.exe; also conhost.exe and git.exe.
-
 >> - wmic csproduct get UUID
 >> - fsutil behavior set SymlinkEvaluation R2L:1 & fsutil behavior set SymlinkEvaluation R2R:1
 >> - git --no-pager config cmder.cmdstatus
-
 >> - Upon reboot, files should be encrypted. Seems like it is inconsistent. Need to find the write command set to get things encrypted right away. 
-
 >> - looks like you should run the app with the access token separately, then run whatever commands you want as a separate command, doesn’t appear to be a UI.
 
 ## Advanced Static Analysis
