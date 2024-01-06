@@ -18,29 +18,29 @@ Hash: `ef2ce641a4e9f270eea626e8e4800b0b97b4a436c40e7af30aeb6f02566b809c`
 ### Detect It Easy
 216.5k file size, Archive: Microsoft Compound(MS Office 97-2003 or MSI etc.).
 High level of entropy, `7.12275`, packed file.
-Using the file command, we can see that the author of the xls file is Gydar.
+Using the file command, the observed author of the xls file is `Gydar`.
 
 ![Emotet DetectItEasy](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/detectiteasyemotetexcelfile.png?raw=true)
 
 ### Floss
 Mostly junk strings extracted, but some interesting strings to pay attention to:
 
-- "URLDownloadToFil
-- s://audioselec.com/about/dDw5ggtyMojggTqhc/
+- `"URLDownloadToFil`
+- `s://audioselec.com/about/dDw5ggtyMojggTqhc/`
 - `//intolove.co.uk/wp-admin/FbGhiWtrEzrQ/`
 - `//geringer-muehle.de/wp-admin/G/`
 - `//isc.net.ua/themes/3rU/`
-- oxnv3.ooccxx
-- oxnv1.ooccxx
-- oxnv4.ooccxx
-- oxnv2.ooccxx
+- `oxnv3.ooccxx`
+- `oxnv1.ooccxx`
+- `oxnv4.ooccxx`
+- `oxnv2.ooccxx`
 - DocumentUserPassword
 - DocumentOwnerPassword
 - DocumentCryptSecurity
 - Microsoft Print to PDF
 - {084F01FA-E634-4D77-83EE-074817C03581}
 
-With 7-zip, we were able to drop 3 additional files onto the host:
+With 7-zip, 3 additional files were extracted onto the host:
 
 - [5]DocumentSummaryInformation (4 KiB); not packed
     - ba78c1bdff4e499ab8fcf63e6ab4664dda42e442f849835e2d390014341cb9f4
@@ -50,11 +50,9 @@ With 7-zip, we were able to drop 3 additional files onto the host:
     - c562d5fc4ff2e4ac1b273aded645ea4a4741add89aaf8faf8901f3f2e2413e15
     - Applesoft BASIC program data, first line number 16
 
-Taking a look at those files quickly, it seems like the Document summary and Summary Information both have some encrypted data, but are relatively small. 
+Examining those files, it seems like the Document summary and Summary Information both have some encrypted data, but are relatively small. The workbook file seems to have a huge amount of data, encrypted or machine code that is not able to be analyzed much further right now. The string `“MZ”` is observed using a hex-editor, coming up in multiple places, but it does not indicate this excel file has an executable packed inside.
 
-The workbook file seems to have a huge amount of data, encrypted or machine code that is not able to be analyzed much further right now. We do see the string `“MZ”` come up in multiple places, but its hard to say if that actually signifies an executable packed in this file. 
-
-* Going back and checking with DetectItEasy, all 3 new files are classified as `“Binary”`.
+* Checking these 3 extracted files with DetectItEasy, all 3 new files are classified as `“Binary”`.
 
 * The Workbook appear to be the contents we extracted from the original xls file. 
 
@@ -62,7 +60,7 @@ Opening the excel file, we have a warning message, telling us where we need to c
 
 ![Xls Message](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/warningmessageexcelfile.png?raw=true)
 
-So trying to open the Workbook that was extracted, it has some interesting strings inside that clue is in more to the intentions. 
+Trying to open the Workbook that was extracted, it has some interesting strings inside that give clues to the intent of the excel file:
 
 ```
 1FAvwC5rXJ1TH2KmUpEdtaeRn40DSBix3uhcgLdpos1
@@ -86,16 +84,16 @@ These are labeled with 1 through 4, the top much reference the other half below 
 
 * Sheet5 is empty. Same for Sheet6, still not finding the Macros.
 
-Using a python script called `Oledump.py`, we can extract the stream of data from the xls file, and we can search through the output to find the interesting references such as `urldownloadtofile`. We also see a Microsoft Print to PDF string referenced.
+Using a python script called `Oledump.py`, we are able to extract the stream of data from the xls file, and we can search through the output to find the interesting references such as `urldownloadtofile`. We also see a Microsoft Print to PDF string referenced.
 
-Also some 36 character stings referenced: `084F01FA-E634-4D77-83EE-074817C03581`
+* Also some 36 character stings referenced: `084F01FA-E634-4D77-83EE-074817C03581`
 
-A reference to a driver:
+* A reference to a driver:
 `hxxps://download-drivers.net/msi/laptop/msi-ms-7a34?devID=084F01FA-E634-4D77-83EE-074817C03581`
 
 ![Protection of Excel File](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/emotet/protectedworkbookmessage.png?raw=true)
 
-Without knowing that password, we just gonna have to analyze differently.
+Without knowing that password, we just gonna have to analyze differently. The password on the workbook makes it so we cannot examine the Macros directly, which is a way to prevent further analysis. From here, the next step is to pivot into Dynamic Analysis.
 
 - Interesting file written: `c2rx.sccd`
 
@@ -103,7 +101,7 @@ Without knowing that password, we just gonna have to analyze differently.
 
 In order to start dynamic analysis, we move the file over to the file path for 64 bit, and later than office 2016: `C:\Program Files\Microsoft Office\root\Templates`
 
-Now, we will get set up for several other things to happen, ProcMon, TCPView, Wireshark, and Regshot being the main tools to check for any changes, see what child processes spawn, and view any C2 connections out.
+Now, we will get set up other tools for the Dynamic Analysis including ProcMon, TCPView, Wireshark, and Regshot being the main tools to check for any changes, see what child processes spawn, and view any C2 connections going out.
 
 ### ProcMon
 After opening the file in the templates section, we get 4 pop ups immediately that show regsvr32.exe being exploited to execute 4 strange files, files we saw referenced earlier after doing a string dump:
@@ -118,9 +116,7 @@ We can see an HTTP Get request method in wireshark, a reference to a string we h
 
 Another one: `hxxp://isc.net.ua/themes/3rU/`
 
-No interesting things on the sites from urlscan.io.
-
-We also see DNS requests to the above domains, and a couple of other interesting domains:
+No interesting things on the sites from urlscan.io. We also see DNS requests to the above domains, and a couple of other interesting domains:
 
 * `audioselec[.]com`
 
@@ -133,7 +129,7 @@ Now, time for system reset, and gonna let this system get on the internet to let
 
 - [Tria.ge](https://tria.ge) reports this 10/10 obviously for being a real infection.
 
-So, looks like what we were expecting, but it looks like for this sample, the sites that were up to download the payloads are giving a 404, so we may not have success downloading those files. The TCP connections to the other url’s look like the C2 activity.
+The sites that were up to download the payloads are giving a 404, so we may not have success downloading those files. The TCP connections to the other url’s look like the C2 activity. The sites this file used to reach out to are taken down. 
 
 These are the calls directly used:
 ```
@@ -145,17 +141,17 @@ These are the calls directly used:
 
 Another interesting and important command to pay attention to: `C:\Windows\System32\rundll32.exe C:\Windows\System32\shell32.dll,SHCreateLocalServerRunDll {9aa46009-3ce0-458a-a354-715610a075e6} -Embedding`
 
-A file this xls file is supposed to download is a dll file, which is a PE64 packed binary.
+This xls file is supposed to download is a trojan dll file, which is a PE64 packed binary. Next, we will examine the dll that was intended to be downloaded to see what the second stage would involve as part of this chain of attack. 
 
 ## Static Analysis Emotet Trojan DLL
 
 ### [VirusTotal](https://www.virustotal.com/gui/file/bb444759e8d9a1a91a3b94e55da2aa489bb181348805185f9b26f4287a55df36)
 Hash: `bb444759e8d9a1a91a3b94e55da2aa489bb181348805185f9b26f4287a55df36`
 
-`28` flagged imports. Cryptography is something referenced quite a bit and is flagged for this dll file. `35` flagged strings, with many other malicious strings, including some compressed strings. 
+`28` flagged imports. Cryptography api's are referenced significantly for this file, and multiple api's are flagged for this dll file. `35` flagged strings, with many other malicious strings, including some compressed strings. 
 
 ### Detect It Easy
-Indicates this file is a PE64 file, but this has to be run as a dll as it is a linker file. 
+Indicates this file is a PE64 file, but this has to be run as a dll as it is a linker file. It cannot be executed directly.
 
 It has 24 different sections of base64 compressed content.
 
@@ -167,19 +163,19 @@ Interesting strings:
 
 ## Dynammic Analysis Emotet Trojan DLL
 
-Executing with rundll32.exe didn’t do anything, but when we register this dll, we get more action and activity:
+Executing with rundll32.exe didn’t do anything, but when we register this dll with `regsvr32.exe`, we see this file executing it's malicious payload:
 
 `C:\Windows\system32\regsvr32.exe "C:\Users\dath\AppData\Local\FbomSUOaU\iQhgZ.dll"`
 
 Hash: `bb444759e8d9a1a91a3b94e55da2aa489bb181348805185f9b26f4287a55df36`
 
-It copies it self here for persistence. Not seeing a reg key modified for startup or persistence. It `self deletes` from original location. 
+It copies it self in the user's `AppData\Local` path for persistence. Not seeing a reg key modified for startup or persistence. It `self deletes` from original location. 
 
 Lots of attempted TCP Connections. Keeps interacting with this dll file: `C:\Windows\System32\OnDemandConnRouteHelper.dll`
 
-- This happens if during your detonation it cannot reach out to any kind of internet connectivity. You need to either let it have internet connectivity (not advised), or you need some application to mimic/simulate internet connections.
+- This happens if during your detonation it cannot reach out to any kind of internet connectivity. The file needs to be given internet connectivity (not advised), or you need some application to mimic/simulate internet connections. Some tools that help with this are `Inetsim` and `Fake-Net-NG`.
 
-Regsvr32.exe is cycling through multiple IP’s. Yep, part of the Epoch4 botnet. gathered all of the C2 IP’s:
+`Regsvr32.exe` is cycling through multiple IP’s. After some additional examination, this appears to be part of the `Epoch4` botnet. `Tria.ge` helps gather all of the C2 IP’s:
 
 ```
 45.235.8.30:8080
@@ -249,7 +245,7 @@ Regsvr32.exe is cycling through multiple IP’s. Yep, part of the Epoch4 botnet.
 ### Ghidra & Cutter
 Entry point → leads to `FUN_180005f0c`
 
-- this function, while not the “main”, appears important as it calls lots of other functions, including a function that using VirtualAlloc (`FUN_18002d600`)
+- This function refenced above, while not the “main”, appears important as it calls lots of other functions, including a function that using VirtualAlloc (`FUN_18002d600`)
 
 ## Advanced Dynamic Analysis Emotet Trojan DLL
 
@@ -285,11 +281,11 @@ We do see a lot of files touched, lots of reg mods, and TCP connections in ProcM
 - Lots of calls out over TCP traffic.
 
 ### Wireshark
-Some interesting DNS requests:
+Interesting DNS requests observed:
 
 - `bayernbadabum.com`
     - This domain has 20 hits for being malicious and related to malware: https://www.virustotal.com/gui/domain/bayernbadabum.com
-    - The urlscan result shows the following text: “this is a sinkhole”; meaning this site has likely been turned into a sinkhole due to the malicious activity
+    - The urlscan result shows the following text: `“this is a sinkhole”`; meaning this site has likely been turned into a sinkhole due to the malicious activity.
     - https://urlscan.io/result/e09137d9-579e-4aab-931a-a95b61bf6164/
 - `4.0.0.10.in-addr.arpa`
 - `200.197.79.204.in-addr.arpa`
@@ -299,11 +295,9 @@ Some interesting DNS requests:
 - `85.65.42.20.in-addr.arpa`
 
 ### RegShot
-No persistence picked up by Regshot. 
+No persistence picked up by Regshot. The dll file did not self-delete. 
 
-The dll file did not self-delete. 
-
-Dumped sample into tria.ge, it seems to run through regsvr32.exe like the trojan dll before. It had a pop up indicating something wrong with Microsoft Register Server. We let the analysis run for 5 minutes.
+* Dumped sample into tria.ge, it seems to run through regsvr32.exe like the trojan dll before. It had a pop up indicating something wrong with Microsoft Register Server. We let the analysis run for 5 minutes before stopping.
 
 ## Advanced Static Analysis IcedID DLL
 
@@ -311,7 +305,7 @@ Dumped sample into tria.ge, it seems to run through regsvr32.exe like the trojan
 ### Ghidra & Cutter
 Entry point → `FUN_180009e10`
 
-- the functions labeled with FUN_ don’t seem to do much, but the dllmain_raw and `dllmain_crt_dispatch` appear to have some things to execute.
+- The functions labeled with FUN_ don’t seem to do much, but the dllmain_raw and `dllmain_crt_dispatch` appear to have some things to execute.
 
 ## Advanced Dynamic Analysis IcedID DLL
 (work in progress)
