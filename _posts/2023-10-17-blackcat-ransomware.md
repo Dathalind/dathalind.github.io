@@ -30,10 +30,10 @@ Interesting strings (sites defanged):
 - /cargo/registry/src/github.com-1ecc6299db9ec823/indexmap-1.7.0/src/map/core/
 - other odd strings: uespemosarenegyl
 - Initializing Networking Routine
-Trying to remove shadow copies
-Waiting for kills to complete
-Shutdown Routine
-Dropping Note and Wallpaper Image
+- Trying to remove shadow copies
+- Waiting for kills to complete
+- Shutdown Routine
+- Dropping Note and Wallpaper Image
 - src/bin/encrypt_app/app.rs
 - `hxxp://zujgzbu5y64xbmvc42addp4lxkoosb4tslf5mehnh7pvqjpwxn5gokyd.onion/b21e1fb6-ff88-425b-8339-3523179a1e3e/886cf430a907bbe9a3fd38fb704d524dbd199c1b042ad6f65dc72ad78704e21\\n\\n\\n`
 - Message about key: hxxp://mu75ltv3lxd24dbyu6gtvmnwybecigs5auki7fces437xvvflzva2nqd.onion/?access-key=${ACCESS_KEY}
@@ -51,30 +51,29 @@ Dropping Note and Wallpaper Image
 ## Dynamic Analysis
 
 ### ProcMon
-After initial execution, it didn’t encrypt any files, maybe because it has an internet connection. Lets try killing it to see if it changes anything. Not seeing any interesting files written.
+After initial execution, it didn’t encrypt any files. We will try killing it to see if it changes anything. No interesting files were written to the host.
 
 - Restoring, doing regshot again. 
 - Running as admin on the process. No inetsim.
-- Still no clear signs, Wireshark is only detecting certain ICMP requests for Microsoft related sites. Lets power off and power back on to see if there is anything different on startup. 
+- Wireshark is only detecting certain ICMP requests for Microsoft related sites. Restarting the VM does not appear to show any changes.
 - No `currentversion\run` keys; no startup or runonce. Nothing sticks out as something interesting from regshot. Rebooting.
-- Reboot shows no visible difference. Ran FakeNet-NG, not seeing anything interesting either for this.
+- Reboot shows no visible difference. Ran `FakeNet-NG`, not seeing any suspicious or malicious connections with this tool either.
 
 ### TCP View
 ![Blackcat TCPView](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/blackcat/blackcattcpview.png?raw=true)
 
-Rebooting.
+We restarted the VM after letting the file execute. This is done to see if anything changes after the restart. 
 
 - Still no sign of the drive being encrypted.
 
-- We couldn’t get things to run because they are using an `access-token` to prevent analysis, however, `supply any string` and it allows us to actually activate the binary.
+- We couldn’t get things to run because the ransomware is using an `access-token` to prevent analysis. There are references to such above in the strings that were extracted. However, if we `supply any string`, it allows us to actually activate the binary and initiate the ransomware.
 
 ### Files Encrypted
-There we go, got it to finally run, dropped the files and changed the wallpapper; Reboot to make sure its still there
+Now it executed, encrypted data on the host, dropped the files and changed the wallpapper. We rebooted to ensure it is still there. 
 - `cat.exe --child --verbose --access-token cats1234 —paths C:\Users`
 - Does not work as propogated.
-- so you have to specify a file path to propogate through, looks like it finally worked with sending as a child process, then it makes files have a `.sykffle` file extension
-- definitely looks like it encrypted files finally. it encrypted my visual studio code app I think. Rebooting showed it was still there.
-- `RECOVER-sykffle-FILES.txt` on Desktop with image.
+    -  You have to specify a file path to propogate through, looks like it finally worked with sending as a child process, then it encrypts files, giving them a `.sykffle` file extension
+- `RECOVER-sykffle-FILES.txt` on Desktop with image, ransomware note.
 
 ![Blackcat EncryptionMessage](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/blackcat/blackcatencryptedmessage.png?raw=true)
 
