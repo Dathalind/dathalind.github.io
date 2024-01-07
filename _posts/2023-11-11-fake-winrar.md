@@ -21,7 +21,7 @@ Data execution prevention, control flow guard, ASLR are enabled.
 
 ![PE Studio](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/fake_winrar/pestudiowinrar1.png?raw=true)
 
-Only 3 libraries; Interesting version, original file name and copyright info.
+Only 3 libraries; Interesting version number of the file, original file name and copyright info.
 
 ### Floss
 > Typical error message, attempting to appear to be legitimate winrar.exe.
@@ -88,15 +88,15 @@ Only 3 libraries; Interesting version, original file name and copyright info.
 >> HKLM\SYSTEM\ControlSet001\Services\bam\State\UserSettings\S-1-5-21-1248556568-55694383-3693071177-1001\\Device\HarddiskVolume2\Users\dath\Desktop\winrarfake.exe
 
 ### Wireshark
-Lots of get requests over http traffic, tcp traffic is all garbled up. No post requests as of yet. Seems to be intended to pull down certificates. May have to check and see what this does when executing on the internet. Killed inetsim, the process is still on desktop, will shutdown and see if anything unusual happens.
+Lots of get requests over http traffic, tcp traffic is all garbled up. No post requests as of yet. Seems to be intended to pull down certificates. Killed inetsim, the process is still on desktop, initiated restart to see if the file disappears. 
 
 > Certificate pop-up after reboot: 
 
 ![CertPopUp](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/fake_winrar/winrarcertpopup.png?raw=true)
 
-Ran process again to see if anything would come up in wireshark. Lets reset and see if Fake-Net picks up anything.
+Ran process again to see if anything would come up in wireshark. Restarted and booted up `Fake-Net-NG` to see if this tool would pick up any new network traffic.
 
-Still not seeing a whole lot, see some DNS requests to microsoft related domains, some ICMP pings.
+- Still not seeing a whole lot, we see some DNS requests to microsoft related domains, some ICMP pings.
 
 ## Advanced Static Analysis
 
@@ -119,11 +119,11 @@ Set breakpoints, after the system point, we hit entry bp.
 - One run through, we get to Virtual Alloc
     - Memory space is open
     - we follow in dump 1, we see an executable, `0x2220000`
-- back to virtual protect
+- Back to virtual protect
     - doesn’t seem to be doing anything interesting yet
     - could be loading or writing data from a dll, different sections
     - hit virtual protect 11 times, nothing interesting, turning off bp
-- back to virtual alloc
+- Back to virtual alloc
     - following dump 2, address near the previous, `0x2300000`, empty
     - fills up with a bunch of FF’s, nothing interesting
     - seems to be setting up additional memory spaces
@@ -143,7 +143,7 @@ At 8 virtual alloc bp’s, we then hit the `IsDebugger` API
 - Lets dump the one PE at `0x22200000`
 
 ### PE-Bear
-- May have dumped this one too early, won’t let me override a section
+- May have dumped this one too early, won’t allow override for a section
 - Still seems incomplete
 
 After turning off bp for Virtual Alloc, we let process run.
