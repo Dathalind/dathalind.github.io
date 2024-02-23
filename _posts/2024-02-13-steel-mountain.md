@@ -86,7 +86,7 @@ After URL Decoding the portions of the script that are encoded, we can see this 
 
 > Success! We are on the machine as the user bill, and can grab user.txt. Now we need to enumerate the box to find our privilege escalation path. 
 
-![User](C:\Users\psove\OneDrive\Documents\GitHub\dathalind.github.io\assets\img\steel_mountain\steelmnuser.png)
+![User](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/steel_mountain/steelmnuser.png?raw=true)
 
 ## Local Enumeration
 After doing a file transfer with powershell, we let the x86 version of winpeas run to see what vulnerabilities exist, and take a look through to see what stands out the most. We want to find the low hanging fruit. 
@@ -121,4 +121,4 @@ Since `Advanced System Care` didn't have quotes, we throw a reverse shell into t
 
 We transfer the payload over, put it in the correct path, and use sc start/stop to stop and start the service. Once this is done, we get our shell back, and are now `NT Authority\System`.
 
-![Root](C:\Users\psove\OneDrive\Documents\GitHub\dathalind.github.io\assets\img\steel_mountain\steelmnroot.png)
+![Root](https://github.com/Dathalind/dathalind.github.io/blob/main/assets/img/steel_mountain/steelmnroot.png?raw=true)
