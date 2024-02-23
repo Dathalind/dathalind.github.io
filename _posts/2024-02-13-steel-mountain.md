@@ -35,7 +35,7 @@ Steel Mountain is a vulnerable machine from [TryHackMe](https://tryhackme.com) t
     * 47001/tcp open     http    Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
     * |_http-server-header: Microsoft-HTTPAPI/2.0
     * 8080/tcp open http HttpFileServer httpd 2.3
-[Rejetto HFS](http://www.rejetto.com/hfs/)
+[Rejetto HFS](https://www.rejetto.com/hfs/)
 
 Most of the ports open aren't terrible helpful to use, the unknowns we can ignore here. The most interesting are typically the smb and http services. Checking out the smb services didn't get me anywhere at all, as there doesn't seem to be any access open over smb from what I could find. 
 
