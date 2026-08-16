@@ -102,7 +102,7 @@ FLOSS didn't find any stack strings or decoded strings for this sample either.
 
 ### Assessment
 
-**Key finding:** the file-mapping and file-copy imports, combined with the string references back to `Lab01-01.dll`, point to this EXE acting as a loader or launcher for the DLL. Given the DLL's apparent C2/networking role, my guess is this pairing is meant for data exfiltration with some file-manipulation or file-destruction capability on the host. I haven't seen anything yet that indicates file encryption.
+**Key finding:** the file-mapping and file-copy imports, combined with the string references back to `Lab01-01.dll`, point to this EXE acting as a loader or launcher for the DLL. Given the DLL's apparent C2/networking role, my assessment is this pairing is meant for data exfiltration with some file-manipulation or file-destruction capability on the host. I haven't seen anything yet that indicates file encryption.
 
 ## Lab01-02.exe
 
@@ -259,4 +259,4 @@ Loading the dumped 16 KB PE into PEStudio shows strings related to file download
 | Lab01-03.exe | EXE | Custom/unknown packer | Unpacks via conditional jump, capabilities TBD |
 | Lab01-04.exe | EXE | Embedded PE (resource) | Dropper, embeds a second PE disguised as a Windows update file |
 
-Taken together, these five samples look like components of the same malware family: a dropper and loader pair (`Lab01-01.exe`/`Lab01-01.dll`) with C2 connectivity, a packed persistence mechanism (`Lab01-02.exe`), and two additional samples (`Lab01-03.exe`, `Lab01-04.exe`) that use packing and resource embedding to hide a similar dropper/loader pattern. Further dynamic analysis on the unpacked/dumped contents of `Lab01-03.exe` and the embedded PE from `Lab01-04.exe` would help confirm the full picture.
+Taken together, these five samples look like components of the same malware family: a dropper and loader pair (`Lab01-01.exe`/`Lab01-01.dll`) with C2 connectivity, a packed persistence mechanism (`Lab01-02.exe`), and two additional samples (`Lab01-03.exe`, `Lab01-04.exe`) that use packing and resource embedding to hide a similar dropper/loader pattern.
