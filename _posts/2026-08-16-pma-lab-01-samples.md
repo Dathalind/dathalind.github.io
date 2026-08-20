@@ -1,6 +1,6 @@
 ---
-title: Practical Malware Analysis Lab 01-01 through 01-04
-date: 2026-08-16 10:00
+title: Practical Malware Analysis - Lab 01
+date: 2026-08-16
 categories: [analysis, security, malware, lab]
 tags: [analysis, security, lab, pma]
 ---
