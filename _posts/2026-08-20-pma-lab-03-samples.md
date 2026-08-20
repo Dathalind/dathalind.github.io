@@ -99,11 +99,9 @@ Lab03-02.dll is a service-installer backdoor component. It masquerades as the le
 
 - **File type:** PE32, 7 KB, x86 assembly
 - **Entropy:** 5.96 overall, 6.40 in the `.data` section
-- **SHA256:** `eb84360ca4e33b8bb60df47ab5ce962501ef3420bc7aab90655fd507d2ffcedd`
+- **SHA256:** `ae8a1c7eb64c42ea2a04f97523ebf0844c27029eb040d910048b680f884b9dce`
 - **Compile timestamp:** Sun Jan 06 14:51:31 2008 (UTC)
 - **Sections:** `.text` and `.data`, with `.data` accounting for 85.71% of the total file size
-
-**Notable finding:** the SHA256 hash for Lab03-03.exe is identical to the hash recorded for Lab03-01.exe. This indicates the two files are byte-for-byte the same binary rather than distinct samples, despite being provided under separate filenames. Any static or dynamic findings below should be read as a re-confirmation of Lab03-01's behavior rather than an independent data point.
 
 Heuristic AV scanning flagged the sample as a variant of [Poison Ivy](https://attack.mitre.org/software/S0012/), a well-documented remote access trojan. The single import, `ExitProcess`, matches Lab03-01, and the string set is nearly identical:
 
@@ -140,7 +138,7 @@ The process did not surface in System Informer's process list during execution, 
 
 ### Assessment
 
-Given the identical hash, Lab03-03.exe should be treated as the same underlying binary as Lab03-01.exe. The AV heuristic detection of Poison Ivy RAT adds useful context that was not available from Lab03-01 alone, indicating the HTTP `CONNECT` beaconing and Active Setup persistence mechanism identified in both samples aligns with known Poison Ivy tradecraft, including its use of `vmx32to64.exe` as a masquerading filename. This is a helpful reminder to verify file hashes early in a lab or engagement to avoid duplicating analysis effort across what appear to be distinct files.
+Lab03-03.exe is a distinct binary from Lab03-01.exe, but the two share a near-identical string set, import table, and HTTP `CONNECT` beaconing and Active Setup persistence behavior, strongly suggesting they belong to the same malware family or build lineage. The AV heuristic detection of Poison Ivy RAT on this sample adds useful context that was not available from Lab03-01 alone, indicating both samples align with known Poison Ivy tradecraft, including the use of `vmx32to64.exe` as a masquerading filename. The crash encountered during dynamic analysis again limited full behavioral confirmation, so this assessment leans on the strong static overlap between the two samples.
 
 ## Lab03-04.exe
 
