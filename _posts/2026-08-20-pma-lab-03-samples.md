@@ -216,7 +216,7 @@ Capa's analysis confirmed a broad and coherent capability set:
 
 The combination of service persistence, TCP client communication, self-deletion, and timestomping in a single sample indicates a mature, purpose-built backdoor rather than a simple downloader.
 
-### Deeper Reversing
+### Deeper Code Analysis
 
 `OpenSCManagerA` is called requesting `SC_MANAGER_ALL_ACCESS` (`0xF003F`), which per the [OpenSCManagerA documentation](https://learn.microsoft.com/en-us/windows/win32/api/winsvc/nf-winsvc-openscmanagera) opens the local `SERVICES_ACTIVE_DATABASE` with full administrative control over service objects:
 
