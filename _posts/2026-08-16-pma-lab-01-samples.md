@@ -5,7 +5,7 @@ categories: [analysis, security, malware, lab]
 tags: [analysis, security, lab, pma]
 ---
 
-This post covers the initial static and dynamic analysis pass for the four samples in Practical Malware Analysis Lab 01: `Lab01-01.dll`, `Lab01-01.exe`, `Lab01-02.exe`, `Lab01-03.exe`, and `Lab01-04.exe`. The first three samples didn't turn up much worth screenshotting after the initial pass, so those sections are notes only. The last two samples had the most interesting behavior, so those sections include screenshots.
+This post covers the initial static and dynamic analysis pass for the four samples in Practical Malware Analysis Lab 01: `Lab01-01.dll`, `Lab01-01.exe`, `Lab01-02.exe`, `Lab01-03.exe`, and `Lab01-04.exe`. The first three only required basic static and dynamic analysis to understand their capabilities. The last two samples had the most interesting behavior, with screenshots utilized to capture the interesting components noted.
 
 ## Lab01-01.dll
 
