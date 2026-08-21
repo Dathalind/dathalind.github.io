@@ -66,7 +66,7 @@ The DLL exports five functions: `install`, `ServiceMain`, `UninstallService`, `i
 
 Executing the DLL through `rundll32.exe` without explicitly specifying an export resulted in a crash, and no service creation was observed in this state. Based on the export list, `installA` or `ServiceMain` are the most likely intended entry points for triggering the installation routine.
 
-### Deeper Reversing
+### Deeper Code Analysis
 
 Loading the sample into a disassembler surfaced the string `IPRIP` referenced as `arg1[-7]` inside the `Install` subroutine. Tracing this value further down the function confirmed it is passed directly to `CreateServiceA` as the service name:
 
