@@ -251,7 +251,7 @@ The primary destructive routine lives at **`0x140014e40`**. This function first 
 
 **Privilege targeted for modification:** `SeShutdownPrivilege`, acquired specifically to permit the subsequent call to `NtRaiseHardError`.
 
-From there, `sub_140014e40` spins up three worker threads via `CreateThread`, all routed through a common trampoline (`sub_14000f370`) with different targets and parameters:
+From there, `sub_140014e40` spins up multiple worker threads via `CreateThread`, all routed through a common trampoline (`sub_14000f370`) with different targets and parameters, three examples below:
 
 ```nasm
 1400151a4    CreateThread(..., lpStartAddress: sub_14000f370, lpParameter: [target sub_14000fce0], ...)
