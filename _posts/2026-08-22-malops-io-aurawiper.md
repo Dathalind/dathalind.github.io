@@ -7,7 +7,7 @@ tags: [analysis, security, malware, wiper, capa, floss]
 
 ## Overview
 
-This write-up covers **AuraWiper**, a challenge sample from Malops.io. AuraWiper is a destructive payload built to disable recovery options, terminate monitoring tools, corrupt the boot chain, and overwrite the Master Boot Record (MBR) before forcing a hard system crash. The analysis below combines static triage (Detect It Easy, PEStats, FLOSS, capa) with disassembly-level reversing to answer the challenge questions and document the sample's full attack chain.
+This write-up covers **AuraWiper**, a challenge sample from Malops.io. AuraWiper is a destructive payload built to disable recovery options, terminate monitoring tools, corrupt the boot chain, and overwrite the Master Boot Record (MBR) before forcing a hard system crash. The analysis below combines static triage (Detect It Easy, PEStats, FLOSS, capa) with disassembly-level code analysis to answer the challenge questions and document the sample's full attack chain.
 
 ### Sample Metadata
 
