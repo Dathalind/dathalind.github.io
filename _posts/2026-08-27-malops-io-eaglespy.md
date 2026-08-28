@@ -1,5 +1,5 @@
 ---
-title: EagleSpy Android RAT Analysis
+title: EagleSpy - Malops.io Android RAT Analysis
 date: 2026-08-27
 categories: [analysis, security, malware, lab]
 tags: [analysis, security, lab]
