@@ -402,15 +402,6 @@ This is a Control Flow Guard stub, so the registered image-load callback does no
 
 In `DriverEntry` (`sub_14000114c`), the assignment `arg1->DriverUnload = sub_1400010e0` gives the address directly (see the listing in the DriverEntry section).
 
-## Dynamic Analysis
-
-**No dynamic analysis was performed for this challenge.** The static conclusions above should be treated as hypotheses until confirmed. Recommended tests, in an isolated VM with WinDbg attached:
-
-1. Load the driver, open `\\.\NSecKrnl`, send IOCTL `0x2248e0` with a test PID, and confirm termination and the returned status.
-2. Check the default device ACL to determine whether a **non-administrative** user can open the device.
-3. Inspect the return path of `sub_1400013e8`. Binary Ninja showed the return byte as `0`. If that is always the case, the IOCTL would report failure to the caller even when the kill succeeds, which should be verified in disassembly.
-4. Confirm which IOCTLs populate the protected and trusted lists, and whether the protection callback behaves as described when a protected PID is targeted.
-
 ## Assessment
 
 ### Hypotheses
@@ -453,13 +444,3 @@ Whether this exact hash has been abused in the wild was not verified. Check Viru
 - **Device access:** handle opens to `\\.\NSecKrnl` from processes that are not the vendor's software.
 - **Loader hunting:** user-mode binaries that call `DeviceIoControl` with the IOCTLs above.
 - **Blocking:** add the hash and signer to application control or driver block rules where this vendor's software is not expected.
-
-## Caveats and Unverified Items
-
-- The `Flags` field name and the `MmVerifyCallbackFunction` behavior (Q2) are background knowledge, not artifact evidence.
-- The altitude range claim (Q7) is background knowledge.
-- The return byte of `sub_1400013e8` needs verification in disassembly.
-- The load-image notify registration is a no-op stub, but consumers of `data_140003011` were not checked.
-- Not read: `sub_1400010e0` (unload), `sub_140001480` (process-create callback), `sub_1400012b8`, `sub_140001240`, `sub_140001330`, `sub_14000138c`, `sub_1400015b4`, `sub_1400016f0`.
-- Signature validity, certificate chain and any public reporting or blocklist status for this hash are unverified.
-- No dynamic analysis was performed.
