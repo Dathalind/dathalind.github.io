@@ -1,6 +1,6 @@
 ---
 title: Kernel Shield - Malops.io Windows Kernel Driver Analysis
-date: 2026-10-15
+date: 2026-10-12
 categories: [analysis, security, malware, lab]
 tags: [analysis, security, lab]
 ---
