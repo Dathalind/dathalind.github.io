@@ -286,7 +286,7 @@ A 32-bit hash match is strong evidence, but the matched names come from a limite
 
 The blob begins at `0x40158B`, and the encoded MZ header sits at `0x401590`, five bytes later. That is **1 byte for the key plus a 4-byte length field**.
 
-## Deeper Reversing
+## Deeper Code Analysis
 
 ### Locating the Payload
 
